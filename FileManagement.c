@@ -10,9 +10,9 @@
 #include "FileManagement.h"
 
 FILE *openFile(void) {
-	FILE *fp = fopen("data.bin", "r+b");
+	FILE *fp = fopen(FILENAME, "r+b");
 	if (fp == NULL) {
-		fp = fopen("data.bin", "w+b");
+		fp = fopen(FILENAME, "w+b");
 		if (fp == NULL) {
 			printf("Cannot open file!");
 			exit(1);
