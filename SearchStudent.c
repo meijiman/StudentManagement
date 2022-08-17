@@ -26,7 +26,7 @@ void searchStudentByName() {
 	int i = 1;
 	printHeader();
 	while (fread(&s, sizeof(Student), 1, fp)) {
-		if (strstr(s.fullName, name)) {
+		if (strcasestr(s.fullName, name)) {
 			printRecord(&s, i);
 			i++;
 		}
