@@ -14,11 +14,15 @@
 void addStudent() {
 	clearScreen();
 	printf("******* Add new student *******\n");
-	printf("Enter Student ID: ");
+	printf("Enter Student ID [1000000 - 9999999]: ");
 	fflush(stdin);
 
 	int id;
 	scanf("%d", &id);
+	while(id < 1000000 || id > 9999999) {
+		printf("Invalid value! Retry: ");
+		scanf("%d", &id);
+	}
 
 	int found = isExist(id);
 	if (found == 0) {
@@ -27,8 +31,12 @@ void addStudent() {
 		fflush(stdin);
 		scanf("%[^\n]s", s.fullName);
 
-		printf("Enter Year of Birth: ");
+		printf("Enter Year of Birth [1900 - 2022]: ");
 		scanf("%d", &s.yearOfBirth);
+		while(s.yearOfBirth < 1900 || s.yearOfBirth > 2022) {
+			printf("Invalid Value! Retry: ");
+			scanf("%d", &s.yearOfBirth);
+		}
 
 		printf("Enter Place of Birth: ");
 		fflush(stdin);
@@ -42,13 +50,21 @@ void addStudent() {
 		fflush(stdin);
 		scanf("%[^\n]s", s.major);
 
-		printf("Enter Entry Score: ");
+		printf("Enter Entry Score [0.00 - 30.00]: ");
 		fflush(stdin);
 		scanf("%f", &s.entryScore);
+		while(s.entryScore < 0.0 || s.entryScore > 30.0) {
+			printf("Invalid value! Retry: ");
+			scanf("%f", &s.entryScore);
+		}
 
-		printf("Enter GPA: ");
+		printf("Enter GPA [0.00 - 4.00]: ");
 		fflush(stdin);
 		scanf("%f", &s.gpa);
+		while(s.gpa < 0.0 || s.gpa > 4.0) {
+			printf("Invalid value! Retry: ");
+			scanf("%f", &s.gpa);
+		}
 
 		printf("\n\n");
 		printf("Added successfully!\n");
