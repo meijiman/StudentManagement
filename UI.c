@@ -28,6 +28,7 @@ void printMenu(FILE *fp) {
 		printf("7. Create sample data\n");
 		printf("8. Cleanup data\n");
 		printf("9. Sort student by year of birth\n");
+		printf("10. Search student by year of birth\n");
 		printf("0. Exit\n");
 		printf("\n");
 		printf("Enter your choice: ");
@@ -60,6 +61,9 @@ void printMenu(FILE *fp) {
 			break;
 		case 9:
 			sortStudentByYearOfBirth();
+			break;
+		case 10:
+			searchStudentByYearOfBirth();
 			break;
 		case 0:
 			exit(0);

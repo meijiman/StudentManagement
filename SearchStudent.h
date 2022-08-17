@@ -9,5 +9,6 @@
 #define SEARCHSTUDENT_H_
 
 void searchStudentByName();
+void searchStudentByYearOfBirth();
 
 #endif /* SEARCHSTUDENT_H_ */
