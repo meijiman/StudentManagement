@@ -14,48 +14,54 @@
 void addStudent() {
 	clearScreen();
 	printf("******* Add new student *******\n");
-
 	printf("Enter Student ID: ");
 	fflush(stdin);
-	scanf("%d", &s.id);
 
-	printf("Enter Full Name: ");
-	fflush(stdin);
-	scanf("%[^\n]s", s.fullName);
+	int id;
+	scanf("%d", &id);
 
-	printf("Enter Year of Birth: ");
-	scanf("%d", &s.yearOfBirth);
+	int found = isExist(id);
+	if (found == 0) {
+		s.id = id;
+		printf("Enter Full Name: ");
+		fflush(stdin);
+		scanf("%[^\n]s", s.fullName);
 
-	printf("Enter Place of Birth: ");
-	fflush(stdin);
-	scanf("%[^\n]s", s.placeOfBirth);
+		printf("Enter Year of Birth: ");
+		scanf("%d", &s.yearOfBirth);
 
-	printf("Enter Department: ");
-	fflush(stdin);
-	scanf("%[^\n]s", s.department);
+		printf("Enter Place of Birth: ");
+		fflush(stdin);
+		scanf("%[^\n]s", s.placeOfBirth);
 
-	printf("Enter Major: ");
-	fflush(stdin);
-	scanf("%[^\n]s", s.major);
+		printf("Enter Department: ");
+		fflush(stdin);
+		scanf("%[^\n]s", s.department);
 
-	printf("Enter Entry Score: ");
-	fflush(stdin);
-	scanf("%f", &s.entryScore);
+		printf("Enter Major: ");
+		fflush(stdin);
+		scanf("%[^\n]s", s.major);
 
-	printf("Enter GPA: ");
-	fflush(stdin);
-	scanf("%f", &s.gpa);
+		printf("Enter Entry Score: ");
+		fflush(stdin);
+		scanf("%f", &s.entryScore);
 
-	printf("\n\n");
-	printf("Added successfully!\n");
-	printf("\n\n");
+		printf("Enter GPA: ");
+		fflush(stdin);
+		scanf("%f", &s.gpa);
 
-	printHeader();
+		printf("\n\n");
+		printf("Added successfully!\n");
+		printf("\n\n");
 
-	printRecord(&s, 1);
+		printHeader();
 
-	fwrite(&s, sizeof(Student), 1, fp);
+		printRecord(&s, 1);
 
+		fwrite(&s, sizeof(Student), 1, fp);
+	} else {
+		printf("Record existed!");
+	}
 	pauseScreen();
 }
 
@@ -116,49 +122,51 @@ void modifyStudent() {
 	int id;
 	scanf("%d", &id);
 
-	while(fread(&s, sizeof(Student), 1, fp)) {
-		if (s.id == id) {
-			printf("Enter New Full Name (%s): ", s.fullName);
-			fflush(stdin);
-			scanf("%[^\n]s", s.fullName);
+	int found = isExist(id);
+	if (found == 1) {
+		rewind(fp);
+		while(fread(&s, sizeof(Student), 1, fp)) {
+			if (s.id == id) {
+				printf("Enter New Full Name (%s): ", s.fullName);
+				fflush(stdin);
+				scanf("%[^\n]s", s.fullName);
 
-			printf("Enter New Year of Birth (%d): ", s.yearOfBirth);
-			fflush(stdin);
-			scanf("%d", &s.yearOfBirth);
+				printf("Enter New Year of Birth (%d): ", s.yearOfBirth);
+				fflush(stdin);
+				scanf("%d", &s.yearOfBirth);
 
-			printf("Enter New Place of Birth (%s): ", s.placeOfBirth);
-			fflush(stdin);
-			scanf("%[^\n]s", s.placeOfBirth);
+				printf("Enter New Place of Birth (%s): ", s.placeOfBirth);
+				fflush(stdin);
+				scanf("%[^\n]s", s.placeOfBirth);
 
-			printf("Enter New Department (%s): ", s.department);
-			fflush(stdin);
-			scanf("%[^\n]s", s.department);
+				printf("Enter New Department (%s): ", s.department);
+				fflush(stdin);
+				scanf("%[^\n]s", s.department);
 
-			printf("Enter New Major (%s): ", s.major);
-			fflush(stdin);
-			scanf("%[^\n]s", s.major);
+				printf("Enter New Major (%s): ", s.major);
+				fflush(stdin);
+				scanf("%[^\n]s", s.major);
 
-			printf("Enter Entry Score (%.2f): ", s.entryScore);
-			fflush(stdin);
-			scanf("%f", &s.entryScore);
+				printf("Enter Entry Score (%.2f): ", s.entryScore);
+				fflush(stdin);
+				scanf("%f", &s.entryScore);
 
-			printf("Enter GPA (%.2f): ", s.gpa);
-			fflush(stdin);
-			scanf("%f", &s.gpa);
-			break;
+				printf("Enter GPA (%.2f): ", s.gpa);
+				fflush(stdin);
+				scanf("%f", &s.gpa);
+				break;
+			}
 		}
+		printf("\n\n");
+		printf("Modified successfully!\n");
+		printf("\n\n");
+		printHeader();
+		printRecord(&s, 1);
+		fseek(fp, -sizeof(Student), SEEK_CUR);
+		fwrite(&s, sizeof(Student), 1, fp);
+	} else {
+		printf("Record not found!\n");
 	}
-	printf("\n\n");
-	printf("Modified successfully!\n");
-	printf("\n\n");
-
-	printHeader();
-
-	printRecord(&s, 1);
-
-	fseek(fp, -sizeof(Student), SEEK_CUR);
-	fwrite(&s, sizeof(Student), 1, fp);
-
 	pauseScreen();
 }
 
@@ -212,5 +220,17 @@ void cleanupData() {
 	openFile(FILENAME);
 	printf("Cleanup data successfully!\n");
 	pauseScreen();
+}
+
+int isExist(int id) {
+	int found = 0;
+	rewind(fp);
+	while (fread(&s, sizeof(Student), 1, fp)) {
+		if (s.id == id) {
+			found = 1;
+			break;
+		}
+	}
+	return found;
 }
 

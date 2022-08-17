@@ -33,5 +33,6 @@ void displayStudents();
 void searchStudentByName();
 void createSampleData();
 void cleanupData();
+int isExist(int id);
 
 #endif /* STUDENTMANAGEMENT_H_ */
