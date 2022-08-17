@@ -71,21 +71,39 @@ void removeStudent() {
 	FILE *ft = fopen("temp.bin", "wb");
 	rewind(fp);
 
+	int found = 0;
+
 	while (fread(&s, sizeof(Student), 1, fp)) {
-		if (s.id != id) {
-			fwrite(&s, sizeof(Student), 1, ft);
+		if (s.id == id) {
+			found = 1;
+			printf("Record to be removed:\n");
+			printHeader();
+			printRecord(&s, 1);
+			break;
 		}
 	}
 
-	fclose(fp);
-	fclose(ft);
+	if (found == 1) {
+		rewind(fp);
+		while (fread(&s, sizeof(Student), 1, fp)) {
+			if (s.id != id) {
+				fwrite(&s, sizeof(Student), 1, ft);
+			}
+		}
 
-	remove(FILENAME);
-	rename("temp.bin", FILENAME);
+		fclose(fp);
+		fclose(ft);
 
-	fp = fopen(FILENAME, "r+b");
+		remove(FILENAME);
+		rename("temp.bin", FILENAME);
 
-	printf("Removed successfully!");
+		fp = fopen(FILENAME, "r+b");
+
+		printf("Removed successfully!");
+	} else {
+		printf("Record not found!");
+	}
+
 	pauseScreen();
 }
 
@@ -97,6 +115,7 @@ void modifyStudent() {
 
 	int id;
 	scanf("%d", &id);
+
 	while(fread(&s, sizeof(Student), 1, fp)) {
 		if (s.id == id) {
 			printf("Enter New Full Name (%s): ", s.fullName);
