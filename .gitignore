@@ -3,4 +3,5 @@ Debug/
 .project
 .settings
 data.bin
-
+cmake-build-debug/
+.idea
